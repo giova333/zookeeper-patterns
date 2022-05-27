@@ -58,6 +58,10 @@
                 <groupId>com.gladunalexander</groupId>
                 <artifactId>service-registry</artifactId>
                 <version>${project.version}</version>
+            </dependency><dependency>
+                <groupId>com.gladunalexander</groupId>
+                <artifactId>distributed-lock</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -66,6 +70,7 @@
         <module>leader-election</module>
         <module>examples</module>
         <module>service-registry</module>
+        <module>distributed-lock</module>
     </modules>
 
 </project>

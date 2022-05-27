@@ -20,6 +20,10 @@
             <groupId>com.gladunalexander</groupId>
             <artifactId>service-registry</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.gladunalexander</groupId>
+            <artifactId>distributed-lock</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

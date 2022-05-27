@@ -57,7 +57,7 @@ public class ServiceRegistry implements Watcher {
             var serviceFullPath = registryZnode + "/" + child;
             var stats = zooKeeper.exists(serviceFullPath, false);
             if (stats == null) continue;
-            byte[] hostInBytes = zooKeeper.getData(serviceFullPath, false, stats);
+            var hostInBytes = zooKeeper.getData(serviceFullPath, false, stats);
             addresses.add(new String(hostInBytes));
         }
         this.addresses = addresses;
