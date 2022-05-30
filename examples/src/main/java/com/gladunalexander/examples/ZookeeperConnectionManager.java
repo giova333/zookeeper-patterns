@@ -12,7 +12,7 @@ import org.apache.zookeeper.ZooKeeper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ZookeeperConnectionManager implements Watcher {
 
-    private static final String ZOOKEEPER_ADDRESS = "localhost:2181";
+    private static final String ZOOKEEPER_ADDRESS = "localhost:2181,localhost:2182,localhost:2183";
     private static final int SESSION_TIMEOUT = 3000;
 
     public static final ZookeeperConnectionManager ZOOKEEPER_CONNECTION_MANAGER = new ZookeeperConnectionManager();

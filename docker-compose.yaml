@@ -1,7 +1,28 @@
 version: '3.1'
 
 services:
-  zookeper:
+  zookeper1:
     image: zookeeper
+    hostname: zookeper1
     ports:
       - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zookeper1:2888:3888;2181 server.2=zookeper2:2888:3888;2181 server.3=zookeper3:2888:3888;2181
+  zookeper2:
+    image: zookeeper
+    hostname: zookeper2
+    ports:
+      - "2182:2181"
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zookeper1:2888:3888;2181 server.2=zookeper2:2888:3888;2181 server.3=zookeper3:2888:3888;2181
+  zookeper3:
+    image: zookeeper
+    hostname: zookeper3
+    ports:
+      - "2183:2181"
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zookeper1:2888:3888;2181 server.2=zookeper2:2888:3888;2181 server.3=zookeper3:2888:3888;2181
+

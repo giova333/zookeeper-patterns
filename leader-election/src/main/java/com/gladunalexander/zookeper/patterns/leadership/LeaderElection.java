@@ -1,6 +1,5 @@
 package com.gladunalexander.zookeper.patterns.leadership;
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;
@@ -16,7 +15,6 @@ import java.util.List;
 import static org.apache.zookeeper.Watcher.Event.EventType.NodeDeleted;
 
 @Slf4j
-@RequiredArgsConstructor
 public class LeaderElection implements Watcher {
 
     private static final String ELECTION_NAMESPACE = "/election";
@@ -24,6 +22,12 @@ public class LeaderElection implements Watcher {
     private final ZooKeeper zookeeper;
     private final OnElectionCallback onElectionCallback;
     private Node node;
+
+    public LeaderElection(ZooKeeper zookeeper, OnElectionCallback onElectionCallback) {
+        this.zookeeper = zookeeper;
+        this.onElectionCallback = onElectionCallback;
+        createZnodeIfNotExists(ELECTION_NAMESPACE, CreateMode.PERSISTENT);
+    }
 
     public void start() {
         volunteerForLeadership();
@@ -39,6 +43,13 @@ public class LeaderElection implements Watcher {
                                          CreateMode.EPHEMERAL_SEQUENTIAL);
         this.node = new Node(znodeName.replace(ELECTION_NAMESPACE + "/", ""));
         log.info("Created znode: {}", node.getName());
+    }
+
+    @Override
+    public void process(WatchedEvent event) {
+        if (event.getType().equals(NodeDeleted)) {
+            electLeader();
+        }
     }
 
     @SneakyThrows
@@ -68,10 +79,15 @@ public class LeaderElection implements Watcher {
         return stat != null;
     }
 
-    @Override
-    public void process(WatchedEvent event) {
-        if (event.getType().equals(NodeDeleted)) {
-            electLeader();
+    @SneakyThrows
+    private void createZnodeIfNotExists(String namespace, CreateMode type) {
+        try {
+            zookeeper.create(namespace,
+                             new byte[]{},
+                             ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                             type);
+        } catch (KeeperException e) {
+            log.info("{} namespace already exists", namespace);
         }
     }
 }
